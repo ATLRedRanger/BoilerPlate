@@ -48,7 +48,9 @@ const Users: React.FC = () => {
   //State variables for the book inputs
   const [bookTitle, setBookTitle] = useState("");
   const [bookAuthor, setBookAuthor] = useState("");
+  //Genre is selected via a dropdown
   const [bookGenre, setBookGenre] = useState("");
+  //Rating is 0 - 5
   const [bookRating, setBookRating] = useState(0);
   //State variable for displaying success/error messages to the user
   const [formMessage, setFormMessage] = useState({ text: "", type: ""});
@@ -129,31 +131,39 @@ const Users: React.FC = () => {
             />
           </div>
 
-          {/* Genre Input Field */}
+          {/* Genre Dropdown (Replaced Input Field) */}
           <div>
             <label htmlFor="bookGenre" className="block text-sm font-medium text-gray-700 mb-1">Genre</label>
-            <input
-              type="text"
+            <select
               id="bookGenre"
               name="bookGenre"
-              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-base outline-none transition duration-150 ease-in-out"
-              placeholder="e.g., Classic Fiction"
-              value={bookGenre}
-              onChange={(e) => setBookGenre(e.target.value)}
-            />
+              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-red-500 sm:text-base outline-none transition duration-150 ease-in-out"
+              value={bookGenre} // Controlled component: selected value tied to state
+              onChange={(e) => setBookGenre(e.target.value)} // Update state on change
+            >
+              <option value="">Select a Genre</option> {/* Default/placeholder option */}
+              <option value="Fiction">Fiction</option>
+              <option value="Science Fiction">Science Fiction</option>
+              <option value="Fantasy">Fantasy</option>
+              <option value="Mystery">Mystery</option>
+              <option value="Thriller">Thriller</option>
+              <option value="Horror">Horror</option>
+            </select>
           </div>
+
           {/* Star Rating Icons (New) */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Star Rating</label>
             <div className="flex items-center space-x-1">
               {[1, 2, 3, 4, 5].map((starValue) => (
+                //svg stands for scalable vector graphics
                 <svg
                   key={starValue}
                   onClick={() => setBookRating(starValue)}
                   className={`
                     w-8 h-8 cursor-pointer transition-colors duration-150 ease-in-out
-                    ${bookRating >= starValue ? 'text-yellow-400' : 'text-gray-300'}
-                    hover:text-yellow-500
+                    ${bookRating >= starValue ? 'text-red-400' : 'text-gray-300'}
+                    hover:text-red-500
                   `}
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -163,6 +173,7 @@ const Users: React.FC = () => {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 >
+                  {/*The path defines the shape of the icons. The current numbers are the star, but these can be changed to get other shapes. */}
                   <path d="M12 .587l3.668 7.568 8.332 1.206-6.001 5.856 1.416 8.307L12 18.896l-7.415 3.898 1.416-8.307-6.001-5.856 8.332-1.206z"/>
                 </svg>
               ))}
@@ -171,6 +182,7 @@ const Users: React.FC = () => {
               <p className="text-xs text-gray-500 mt-1">Current rating: {bookRating} star(s)</p>
             )}
           </div>
+
           {/* Submit Button for the Book Form */}
           <button
             id="submitBookButton" // Unique ID for this button
@@ -191,6 +203,7 @@ const Users: React.FC = () => {
             </div>
           )}
         </div>
+
       </div>
       {users.slice(0, visibleUserCount).map((user) => (
         <UserCard key={user.id} user={user} />
