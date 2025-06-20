@@ -1,17 +1,17 @@
 //POST in the body a .json object
 
-type BookDTO {
+type BookDTO= {
 
-  title: String    
-  author: String    
-  genre: String     
-  rating: Number      
-
-
+  title: String; 
+  author: String;  
+  genre: String;     
+  rating: Number;      
 
 }
 
+export const useGetBookApi= async (book: BookDTO) => {
 
+} 
 
 
 export const useGetHelloAPI= async () => {
