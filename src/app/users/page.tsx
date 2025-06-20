@@ -45,6 +45,10 @@ const Users: React.FC = () => {
 
   if (!users) return <></>
 
+  const [bookTitle, setBookTitle] = useState("");
+  const [bookAuthor, setBookAuthor] = useState("");
+  const [bookGenre, setBookGenre] = useState("");
+
   return (
     <main className="px-6 py-4 w-full max-w-[800px]">
       {users.slice(0, visibleUserCount).map((user) => (
