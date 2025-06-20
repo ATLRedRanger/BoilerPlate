@@ -66,9 +66,6 @@ const Users: React.FC = () => {
 
     fetchData();
   }, []);
-  
-  //MAKING A CHANGE
-  console.log("This is the final countdown");
 
   //State variables for the book inputs
   const [bookTitle, setBookTitle] = useState("");

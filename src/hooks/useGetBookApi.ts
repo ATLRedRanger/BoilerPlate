@@ -24,7 +24,7 @@ export const useGetBookApi = () => { // <--- REMOVE 'async' HERE
       setData(null);
   
       try {
-        const response = await fetch('/api/books', {
+        const response = await fetch('/api/book', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
