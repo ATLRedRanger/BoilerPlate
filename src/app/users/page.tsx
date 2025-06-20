@@ -49,7 +49,7 @@ const Users: React.FC = () => {
   const [bookTitle, setBookTitle] = useState("");
   const [bookAuthor, setBookAuthor] = useState("");
   const [bookGenre, setBookGenre] = useState("");
-  
+  const [bookRating, setBookRating] = useState(0);
   //State variable for displaying success/error messages to the user
   const [formMessage, setFormMessage] = useState({ text: "", type: ""});
 
@@ -69,11 +69,16 @@ const Users: React.FC = () => {
       return; // Stop function execution if validation fails
     }
 
+    if (bookRating === 0) {
+      setFormMessage({text: "Please select a star rating for the book.", type: "error"});
+      return;
+    }
     // Log the captured book details to the console (simulating database input)
     console.log('--- New Book Details Captured ---');
     console.log('Book Title:', trimmedTitle);
     console.log('Author:', trimmedAuthor);
     console.log('Genre:', trimmedGenre);
+    console.log("Star Rating:", bookRating);
     console.log('---------------------------------');
 
     // Display a success message to the user
@@ -83,6 +88,7 @@ const Users: React.FC = () => {
     setBookTitle('');
     setBookAuthor('');
     setBookGenre('');
+    setBookRating(0);
   };
 
   //This needs to be directly on top of the HTML code
@@ -136,7 +142,35 @@ const Users: React.FC = () => {
               onChange={(e) => setBookGenre(e.target.value)}
             />
           </div>
-
+          {/* Star Rating Icons (New) */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Star Rating</label>
+            <div className="flex items-center space-x-1">
+              {[1, 2, 3, 4, 5].map((starValue) => (
+                <svg
+                  key={starValue}
+                  onClick={() => setBookRating(starValue)}
+                  className={`
+                    w-8 h-8 cursor-pointer transition-colors duration-150 ease-in-out
+                    ${bookRating >= starValue ? 'text-yellow-400' : 'text-gray-300'}
+                    hover:text-yellow-500
+                  `}
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  stroke="currentColor"
+                  strokeWidth="0"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M12 .587l3.668 7.568 8.332 1.206-6.001 5.856 1.416 8.307L12 18.896l-7.415 3.898 1.416-8.307-6.001-5.856 8.332-1.206z"/>
+                </svg>
+              ))}
+            </div>
+            {bookRating > 0 && (
+              <p className="text-xs text-gray-500 mt-1">Current rating: {bookRating} star(s)</p>
+            )}
+          </div>
           {/* Submit Button for the Book Form */}
           <button
             id="submitBookButton" // Unique ID for this button
