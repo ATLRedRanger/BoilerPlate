@@ -1,14 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
-
-type BookDTO= {
-
-    title: string; 
-    author: string;  
-    genre: string;     
-    rating: number;      
-  
-  }
+import { BookDTO } from "@/hooks/useGetBookApi";
 
 const prisma = new PrismaClient();
 
@@ -31,8 +23,6 @@ export const findsFirstEmail = async () => {
 
 //Call prisma function to insert book into database
 export const addBookToDB = async (bookData: BookDTO) => {
-    
-
     try
     {
         const newBook = await prisma.book.create({

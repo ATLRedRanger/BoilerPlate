@@ -1,38 +1,52 @@
 //POST in the body a .json object
+import { useState } from "react";
 
-type BookDTO= {
 
-  title: String; 
-  author: String;  
-  genre: String;     
-  rating: Number;      
+export type BookDTO= {
+
+  title: string; 
+  author: string;  
+  genre: string;     
+  rating: number;      
 
 }
 
-export const useGetBookApi= async (book: BookDTO) => {
-
-} 
-
-
-export const useGetHelloAPI= async () => {
-
-    try{
-        const response = await fetch(`http://localhost:3000/api/book` , {
-            method: "GET",
+// Custom hook for handling book creation API calls
+export const useGetBookApi = () => { // <--- REMOVE 'async' HERE
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+    const [data, setData] = useState<BookDTO | null>(null);
+  
+    // This function *inside* the hook IS async, which is correct
+    const createBook = async (book: BookDTO) => {
+      setIsLoading(true);
+      setError(null);
+      setData(null);
+  
+      try {
+        const response = await fetch('/api/books', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(book),
         });
-
-        if(!response.ok){
-            throw new Error(`HTTP error! status: ${response.status}`);
+  
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Failed to create book.');
         }
-
-        const emailData = await response.json();
-
-        console.log("Fetched email data:", emailData);
-
-        return (emailData);
-    }
-    catch (error) {
-        console.error("Error fetching email:", error);
-        throw error;
-    }
-}
+  
+        const responseData: BookDTO = await response.json();
+        setData(responseData);
+        return responseData;
+      } catch (err: any) {
+        setError(err.message || 'An unknown error occurred.');
+        throw err;
+      } finally {
+        setIsLoading(false);
+      }
+    };
+  
+    return { createBook, isLoading, error, data };
+  };

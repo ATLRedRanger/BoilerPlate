@@ -8,6 +8,8 @@ import { formatDate } from '@/lib/date'
 import Avatar from '@/components/Avatar'
 import { useGetHelloAPI } from '@/hooks/useGetHelloApi'
 import { fetchData } from 'next-auth/client/_utils'
+import { useGetBookApi } from '@/hooks/useGetBookApi'
+import { BookDTO } from '@/hooks/useGetBookApi'
 
 const LOAD_INCREMENT = 5
 
@@ -76,13 +78,15 @@ const Users: React.FC = () => {
   //Rating is 0 - 5
   const [bookRating, setBookRating] = useState(0);
   //State variable for displaying success/error messages to the user
-  const [formMessage, setFormMessage] = useState({ text: "", type: ""});
+  const [formMessage, setFormMessage] = useState<{ text: string; type: string } | null>(null);
 
+  const {createBook, isLoading } = useGetBookApi();
   /**
    * Handles the submission of the new book form.
    * Performs basic validation and logs the collected data.
    */
-  const handleBookSubmit = () => {
+  const handleBookSubmit = async () => {
+
     // Trim whitespace from input values for validation
     // Trim removes whitespace on the left and right ends of the string
     const trimmedTitle = bookTitle.trim();
@@ -109,6 +113,40 @@ const Users: React.FC = () => {
 
     // Display a success message to the user
     setFormMessage({ text: `Book "${trimmedTitle}" by ${trimmedAuthor} (${trimmedGenre}) has been saved!`, type: 'success' });
+
+    const newBookData: BookDTO = {
+      title: trimmedTitle,
+      author: trimmedAuthor,
+      genre: trimmedGenre,
+      rating: bookRating
+    }
+    try {
+      setFormMessage(null); // Clear previous messages
+      // Call the createBook function from the hook
+      await createBook(newBookData);
+
+      // Display a success message to the user
+      setFormMessage({
+        text: `Book "${trimmedTitle}" by ${trimmedAuthor} (${trimmedGenre}) has been saved!`,
+        type: 'success',
+      });
+
+      // Clear the book input fields after successful submission
+      setBookTitle('');
+      setBookAuthor('');
+      setBookGenre('');
+      setBookRating(0);
+
+    } 
+    catch (err) 
+    {
+      // The useCreateBook hook already sets the error state, but you can display it here too
+      setFormMessage({
+        text: error || 'Failed to save book. Please try again.',
+        type: 'error',
+      });
+      console.error('Submission error:', err);
+    }
 
     // Clear the book input fields after successful "submission"
     setBookTitle('');
@@ -225,17 +263,6 @@ const Users: React.FC = () => {
           >
             Submit Book
           </button>
-
-          {/* Message Display Area for Book Form (conditionally rendered) */}
-          {formMessage.text && ( // Only render if formMessage.text is not empty
-            <div
-              id="formMessageArea"
-              className={`mt-4 p-3 rounded-lg text-center text-sm ${formMessage.type === 'success' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}
-              role="alert"
-            >
-              {formMessage.text}
-            </div>
-          )}
         </div>
 
       </div>
