@@ -75,7 +75,7 @@ const Users: React.FC = () => {
   //Rating is 0 - 5
   const [bookRating, setBookRating] = useState(0);
   //State variable for displaying success/error messages to the user
-  const [formMessage, setFormMessage] = useState<{ text: string; type: string } | null>(null);
+  const [formMessage, setFormMessage] = useState<{ text: string; type: string }>({ text: '', type: '' });
 
   const {createBook, isLoading } = useGetBookApi();
   /**
@@ -88,10 +88,10 @@ const Users: React.FC = () => {
     // Trim removes whitespace on the left and right ends of the string
     const trimmedTitle = bookTitle.trim();
     const trimmedAuthor = bookAuthor.trim();
-    const trimmedGenre = bookGenre.trim();
+    const selectedGenre = bookGenre.trim();
 
     // Basic validation: Check if any field is empty
-    if (!trimmedTitle || !trimmedAuthor || !trimmedGenre) {
+    if (!trimmedTitle || !trimmedAuthor || !selectedGenre) {
       setFormMessage({ text: 'Please fill in all book fields.', type: 'error' });
       return; // Stop function execution if validation fails
     }
@@ -104,27 +104,27 @@ const Users: React.FC = () => {
     console.log('--- New Book Details Captured ---');
     console.log('Book Title:', trimmedTitle);
     console.log('Author:', trimmedAuthor);
-    console.log('Genre:', trimmedGenre);
+    console.log('Genre:', selectedGenre);
     console.log("Star Rating:", bookRating);
     console.log('---------------------------------');
 
     // Display a success message to the user
-    setFormMessage({ text: `Book "${trimmedTitle}" by ${trimmedAuthor} (${trimmedGenre}) has been saved!`, type: 'success' });
+    //setFormMessage({ text: `Book "${trimmedTitle}" by ${trimmedAuthor} (${selectedGenre}) has been saved!`, type: 'success' });
 
     const newBookData: BookDTO = {
       title: trimmedTitle,
       author: trimmedAuthor,
-      genre: trimmedGenre,
+      genre: selectedGenre,
       rating: bookRating
     }
     try {
-      setFormMessage(null); // Clear previous messages
+      setFormMessage({text: "", type: ""}); // Clear previous messages
       // Call the createBook function from the hook
       await createBook(newBookData);
 
       // Display a success message to the user
       setFormMessage({
-        text: `Book "${trimmedTitle}" by ${trimmedAuthor} (${trimmedGenre}) has been saved!`,
+        text: `Book "${trimmedTitle}" by ${trimmedAuthor} (${selectedGenre}) has been saved!`,
         type: 'success',
       });
 
@@ -144,12 +144,6 @@ const Users: React.FC = () => {
       });
       console.error('Submission error:', err);
     }
-
-    // Clear the book input fields after successful "submission"
-    setBookTitle('');
-    setBookAuthor('');
-    setBookGenre('');
-    setBookRating(0);
   };
 
   //This needs to be directly on top of the HTML code
@@ -260,6 +254,15 @@ const Users: React.FC = () => {
           >
             Submit Book
           </button>
+          {formMessage.text && ( // Only render if formMessage.text is not empty
+            <div
+              id="formMessageArea"
+              className={`mt-4 p-3 rounded-lg text-center text-sm ${formMessage.type === 'success' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}
+              role="alert"
+            >
+              {formMessage.text}
+            </div>
+          )}
         </div>
 
       </div>
