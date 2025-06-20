@@ -6,6 +6,8 @@ import { User } from '@prisma/client'
 import { useGetUsersQuery } from '@/store'
 import { formatDate } from '@/lib/date'
 import Avatar from '@/components/Avatar'
+import { useGetHelloAPI } from '@/hooks/useGetHelloApi'
+import { fetchData } from 'next-auth/client/_utils'
 
 const LOAD_INCREMENT = 5
 
@@ -43,6 +45,26 @@ const Users: React.FC = () => {
     behavior: 'smooth',
   })
 
+  // Using the useGetHelloAPI hook
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await useGetHelloAPI();
+        setData(result);
+      } catch (err) {
+        setError(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+  
   
 
   //State variables for the book inputs
@@ -61,6 +83,7 @@ const Users: React.FC = () => {
    */
   const handleBookSubmit = () => {
     // Trim whitespace from input values for validation
+    // Trim removes whitespace on the left and right ends of the string
     const trimmedTitle = bookTitle.trim();
     const trimmedAuthor = bookAuthor.trim();
     const trimmedGenre = bookGenre.trim();
@@ -84,7 +107,7 @@ const Users: React.FC = () => {
     console.log('---------------------------------');
 
     // Display a success message to the user
-    setFormMessage({ text: `Book "${trimmedTitle}" by ${trimmedAuthor} (${trimmedGenre}) has been captured! (Check console)`, type: 'success' });
+    setFormMessage({ text: `Book "${trimmedTitle}" by ${trimmedAuthor} (${trimmedGenre}) has been saved!`, type: 'success' });
 
     // Clear the book input fields after successful "submission"
     setBookTitle('');
@@ -98,7 +121,17 @@ const Users: React.FC = () => {
 
   return (
     <main className="px-6 py-4 w-full max-w-[800px]">
-      {/* --- New Book Input Form Section (Above your existing content) --- */}
+      {/* Displaying the information retrieved from the helloAPi */}
+      <div>
+      <h1>Hello API Data:</h1>
+      {data ? (
+        <pre>{JSON.stringify(data, null, 2)}</pre>
+      ) : (
+        <p>No data received.</p>
+      )}
+    </div>
+
+    {/* --- New Book Input Form Section (Above your existing content) --- */}
       <div className="bg-white p-8 rounded-2xl shadow-xl max-w-md w-full border border-gray-200 mx-auto mb-8">
         <h2 className="text-3xl font-extrabold text-gray-800 mb-8 text-center">Add New Book</h2>
 
@@ -151,7 +184,7 @@ const Users: React.FC = () => {
             </select>
           </div>
 
-          {/* Star Rating Icons (New) */}
+          {/* Star Rating Icons*/}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Star Rating</label>
             <div className="flex items-center space-x-1">
@@ -173,7 +206,7 @@ const Users: React.FC = () => {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 >
-                  {/*The path defines the shape of the icons. The current numbers are the star, but these can be changed to get other shapes. */}
+                  {/* The path defines the shape of the icons. The current numbers are the star, but these can be changed to get other shapes. */}
                   <path d="M12 .587l3.668 7.568 8.332 1.206-6.001 5.856 1.416 8.307L12 18.896l-7.415 3.898 1.416-8.307-6.001-5.856 8.332-1.206z"/>
                 </svg>
               ))}
