@@ -1,12 +1,54 @@
-export interface BookItem{
+// src/types/bookTypes.ts
+
+// This is the flattened BookItem interface that you want to use throughout your app.
+// It combines relevant data points directly from the Google API's nested structure.
+export interface BookItem {
+    id: string; // Google's unique ID for the book
     title: string;
-    author: string;
-    genre: string;
+    author: string; // Combined from Google's authors array
+    genre: string;  // Derived from Google's categories
     pageCount: number;
-}
-
-
-
+    thumbnail?: string; // Optional: for the book cover image
+    previewLink?: string; // Optional: for linking to a preview on Google Books
+    description?: string; // Optional: if you want to include a short description
+  }
+  
+  // BooksApiResponse now contains an array of YOUR flattened BookItem
+  export interface BooksApiResponse {
+    kind: string;
+    totalItems: number;
+    items?: BookItem[]; // Array of your flattened BookItem
+  }
+  
+  // We'll also need interfaces for the *raw* Google API response to parse it
+  // These should ideally be in a separate file like 'src/types/googleApiRawTypes.ts'
+  // but for simplicity, I'll put them here or assume they are managed by the hook
+  // so they don't clutter your main application types.
+  // For the purpose of the mapping, we still need to know the *original* structure:
+  export interface RawGoogleBookVolumeInfo {
+    title?: string;
+    authors?: string[];
+    pageCount?: number;
+    categories?: string[];
+    imageLinks?: {
+      thumbnail?: string;
+      smallThumbnail?: string;
+    };
+    previewLink?: string;
+    description?: string;
+  }
+  
+  export interface RawGoogleBookItem {
+    id: string;
+    volumeInfo: RawGoogleBookVolumeInfo;
+    // ... other top-level Google API properties you don't care about (kind, etag, saleInfo, etc.)
+  }
+  
+  export interface RawGoogleBooksApiResponse {
+    kind: string;
+    totalItems: number;
+    items?: RawGoogleBookItem[];
+  }
 
 // googlebooksapi/route.ts
 import { NextRequest, NextResponse } from 'next/server';
