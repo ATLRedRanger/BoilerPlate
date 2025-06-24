@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "lintclean": "next lint --fix",
     "migrate": "npx prisma migrate dev --skip-seed",
     "up": "docker-compose -f docker-compose.yml up -d && docker-compose logs -f",
     "down": "docker-compose -f docker-compose.yml down",

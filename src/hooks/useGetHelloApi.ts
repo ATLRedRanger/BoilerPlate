@@ -1,27 +1,20 @@
+export const useGetHelloAPI = async () => {
+  try {
+    const response = await fetch('http://localhost:3000/api/helloWorld', {
+      method: 'GET',
+    })
 
-
-
-
-
-export const useGetHelloAPI= async () => {
-
-    try{
-        const response = await fetch(`http://localhost:3000/api/helloWorld` , {
-            method: "GET",
-        });
-
-        if(!response.ok){
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const emailData = await response.json();
-
-        console.log("Fetched email data:", emailData);
-
-        return (emailData);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
     }
-    catch (error) {
-        console.error("Error fetching email:", error);
-        throw error;
-    }
+
+    const emailData = await response.json()
+
+    console.log('Fetched email data:', emailData)
+
+    return (emailData)
+  } catch (error) {
+    console.error('Error fetching email:', error)
+    throw error
+  }
 }

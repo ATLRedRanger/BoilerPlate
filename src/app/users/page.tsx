@@ -7,9 +7,7 @@ import { useGetUsersQuery } from '@/store'
 import { formatDate } from '@/lib/date'
 import Avatar from '@/components/Avatar'
 import { useGetHelloAPI } from '@/hooks/useGetHelloApi'
-import { fetchData } from 'next-auth/client/_utils'
-import { useGetBookApi } from '@/hooks/useGetBookApi'
-import { BookDTO } from '@/hooks/useGetBookApi'
+import { useGetBookApi, BookDTO } from '@/hooks/useGetBookApi'
 
 const LOAD_INCREMENT = 5
 
@@ -48,68 +46,67 @@ const Users: React.FC = () => {
   })
 
   // Using the useGetHelloAPI hook
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [data, setData] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await useGetHelloAPI();
-        setData(result);
+        const result = await useGetHelloAPI()
+        setData(result)
       } catch (err) {
-        setError(error);
+        setError(error)
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
-    };
+    }
 
-    fetchData();
-  }, []);
+    fetchData()
+  }, [])
 
-  //State variables for the book inputs
-  const [bookTitle, setBookTitle] = useState("");
-  const [bookAuthor, setBookAuthor] = useState("");
-  //Genre is selected via a dropdown
-  const [bookGenre, setBookGenre] = useState("");
-  //Rating is 0 - 5
-  const [bookRating, setBookRating] = useState(0);
-  //State variable for displaying success/error messages to the user
-  const [formMessage, setFormMessage] = useState<{ text: string; type: string }>({ text: '', type: '' });
+  // State variables for the book inputs
+  const [bookTitle, setBookTitle] = useState('')
+  const [bookAuthor, setBookAuthor] = useState('')
+  // Genre is selected via a dropdown
+  const [bookGenre, setBookGenre] = useState('')
+  // Rating is 0 - 5
+  const [bookRating, setBookRating] = useState(0)
+  // State variable for displaying success/error messages to the user
+  const [formMessage, setFormMessage] = useState<{ text: string; type: string }>({ text: '', type: '' })
 
-  const {createBook, isLoading } = useGetBookApi();
+  const { createBook, isLoading } = useGetBookApi()
   /**
    * Handles the submission of the new book form.
    * Performs basic validation and logs the collected data.
    */
   const handleBookSubmit = async () => {
-
     // Trim whitespace from input values for validation
     // Trim removes whitespace on the left and right ends of the string
-    const trimmedTitle = bookTitle.trim();
-    const trimmedAuthor = bookAuthor.trim();
-    const selectedGenre = bookGenre.trim();
+    const trimmedTitle = bookTitle.trim()
+    const trimmedAuthor = bookAuthor.trim()
+    const selectedGenre = bookGenre.trim()
 
     // Basic validation: Check if any field is empty
     if (!trimmedTitle || !trimmedAuthor || !selectedGenre) {
-      setFormMessage({ text: 'Please fill in all book fields.', type: 'error' });
-      return; // Stop function execution if validation fails
+      setFormMessage({ text: 'Please fill in all book fields.', type: 'error' })
+      return // Stop function execution if validation fails
     }
 
     if (bookRating === 0) {
-      setFormMessage({text: "Please select a star rating for the book.", type: "error"});
-      return;
+      setFormMessage({ text: 'Please select a star rating for the book.', type: 'error' })
+      return
     }
     // Log the captured book details to the console (simulating database input)
-    console.log('--- New Book Details Captured ---');
-    console.log('Book Title:', trimmedTitle);
-    console.log('Author:', trimmedAuthor);
-    console.log('Genre:', selectedGenre);
-    console.log("Star Rating:", bookRating);
-    console.log('---------------------------------');
+    console.log('--- New Book Details Captured ---')
+    console.log('Book Title:', trimmedTitle)
+    console.log('Author:', trimmedAuthor)
+    console.log('Genre:', selectedGenre)
+    console.log('Star Rating:', bookRating)
+    console.log('---------------------------------')
 
     // Display a success message to the user
-    //setFormMessage({ text: `Book "${trimmedTitle}" by ${trimmedAuthor} (${selectedGenre}) has been saved!`, type: 'success' });
+    // setFormMessage({ text: `Book "${trimmedTitle}" by ${trimmedAuthor} (${selectedGenre}) has been saved!`, type: 'success' });
 
     const newBookData: BookDTO = {
       title: trimmedTitle,
@@ -118,35 +115,32 @@ const Users: React.FC = () => {
       rating: bookRating
     }
     try {
-      setFormMessage({text: "", type: ""}); // Clear previous messages
+      setFormMessage({ text: '', type: '' }) // Clear previous messages
       // Call the createBook function from the hook
-      await createBook(newBookData);
+      await createBook(newBookData)
 
       // Display a success message to the user
       setFormMessage({
         text: `Book "${trimmedTitle}" by ${trimmedAuthor} (${selectedGenre}) has been saved!`,
         type: 'success',
-      });
+      })
 
       // Clear the book input fields after successful submission
-      setBookTitle('');
-      setBookAuthor('');
-      setBookGenre('');
-      setBookRating(0);
-
-    } 
-    catch (err) 
-    {
+      setBookTitle('')
+      setBookAuthor('')
+      setBookGenre('')
+      setBookRating(0)
+    } catch (err) {
       // The useCreateBook hook already sets the error state, but you can display it here too
       setFormMessage({
         text: error || 'Failed to save book. Please try again.',
         type: 'error',
-      });
-      console.error('Submission error:', err);
+      })
+      console.error('Submission error:', err)
     }
-  };
+  }
 
-  //This needs to be directly on top of the HTML code
+  // This needs to be directly on top of the HTML code
   if (!users) return <></>
 
   return (
@@ -214,12 +208,12 @@ const Users: React.FC = () => {
             </select>
           </div>
 
-          {/* Star Rating Icons*/}
+          {/* Star Rating Icons */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Star Rating</label>
             <div className="flex items-center space-x-1">
               {[1, 2, 3, 4, 5].map((starValue) => (
-                //svg stands for scalable vector graphics
+                // svg stands for scalable vector graphics
                 <svg
                   key={starValue}
                   onClick={() => setBookRating(starValue)}
