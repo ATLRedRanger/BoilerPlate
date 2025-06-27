@@ -7,7 +7,7 @@ import { useGetUsersQuery } from '@/store'
 import { formatDate } from '@/lib/date'
 import Avatar from '@/components/Avatar'
 import { useGetHelloAPI } from '@/hooks/useGetHelloApi'
-import { useGetBookApi, BookDTO } from '@/hooks/useGetBookApi'
+import { useSubmitBook, BookDTO } from '@/hooks/useGetBookApi'
 
 const LOAD_INCREMENT = 5
 
@@ -75,7 +75,7 @@ const Users: React.FC = () => {
   // State variable for displaying success/error messages to the user
   const [formMessage, setFormMessage] = useState<{ text: string; type: string }>({ text: '', type: '' })
 
-  const { createBook, isLoading } = useGetBookApi()
+  const { createBook, isLoading } = useSubmitBook()
   /**
    * Handles the submission of the new book form.
    * Performs basic validation and logs the collected data.
