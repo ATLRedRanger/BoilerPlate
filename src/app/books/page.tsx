@@ -104,6 +104,7 @@ export default <BookSearch></BookSearch>*/
 
 import {useState} from 'react';
 import { useGetBooks } from '@/hooks/useGetBookApi';
+import { HelloComponent } from '@/components/HelloComponent';
 
 // Define a stricter interface for the internal state of sorting options
 // This ensures sortBy and sortOrder are always strings within this state.
@@ -113,6 +114,7 @@ interface CurrentSortState {
 }
 
 const BookList: React.FC = () => {
+
   // Example usage: Fetching books sorted by rating in descending order initially
   const { books, loading, error, refetch } = useGetBooks({
     sortBy: 'rating',
@@ -157,8 +159,11 @@ const BookList: React.FC = () => {
     );
   }
 
+
+  //TODO: LazyLoading, fonts, styles, style sheets
   return (
     <div className="container mx-auto p-4 max-w-4xl">
+      <HelloComponent title= "Something"></HelloComponent>
       <h1 className="text-3xl font-bold text-center mb-6 text-gray-800">My Book Collection</h1>
 
       <div className="mb-6 flex flex-col sm:flex-row justify-center items-center gap-4">
@@ -191,13 +196,6 @@ const BookList: React.FC = () => {
           <option value="asc">Ascending</option>
           <option value="desc">Descending</option>
         </select>
-
-        <button
-          onClick={() => refetch(currentSortOptions)} // Refetch with currently selected options
-          className="px-4 py-2 bg-purple-500 text-white rounded-lg shadow hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50"
-        >
-          Apply Sort
-        </button>
       </div>
 
 
@@ -217,14 +215,7 @@ const BookList: React.FC = () => {
           ))}
         </ul>
       )}
-      <div className="mt-8 text-center">
-        <button
-          onClick={() => refetch()}
-          className="px-6 py-3 bg-green-500 text-white font-semibold rounded-lg shadow-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 transition-colors"
-        >
-          Refresh Books
-        </button>
-      </div>
+
     </div>
   );
 };
