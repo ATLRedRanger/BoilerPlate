@@ -78,7 +78,7 @@ export const useSubmitBook = () => { // <--- REMOVE 'async' HERE
       setError(null);
       try {
         // Construct the URL with query parameters for sorting
-        const url = `/api/books?sortBy=${currentSortBy}&sortOrder=${currentSortOrder}`;
+        const url = `/api/book?sortBy=${currentSortBy}&sortOrder=${currentSortOrder}`;
         const response = await fetch(url);
   
         if (!response.ok) {

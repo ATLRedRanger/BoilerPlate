@@ -21,7 +21,7 @@ export const findsFirstEmail = async () => {
     throw (error)
   }
 }
-
+/*
 export async function GET() {
   console.log('helloWorld API')
 
@@ -29,7 +29,7 @@ export async function GET() {
   console.log('helloWorld API is returning ', emailResult)
 
   return NextResponse.json(emailResult)
-}
+}*/
 
 // Call prisma function to insert book into database
 export const addBookToDB = async (bookData: BookDTO) => {

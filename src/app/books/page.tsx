@@ -103,7 +103,7 @@ export default <BookSearch></BookSearch>*/
 "use client"
 
 import {useState} from 'react';
-import { useGetBooks, BookDTO, UseBooksOptions } from '@/hooks/useGetBookApi';
+import { useGetBooks } from '@/hooks/useGetBookApi';
 
 // Define a stricter interface for the internal state of sorting options
 // This ensures sortBy and sortOrder are always strings within this state.
