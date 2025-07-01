@@ -13,7 +13,7 @@ export const useSignIn = () => {
   const signIn = async (
     provider: BuiltInProviderType,
     options?: SignInOptions,
-    authParams?: SignInAuthorizationParams
+    authParams?: SignInAuthorizationParams,
   ) => {
     setIsLoading(true)
     const res = await signInUser({
@@ -21,9 +21,9 @@ export const useSignIn = () => {
       options: {
         ...options,
         csrfToken: await getCsrfToken(),
-        redirect: false
+        redirect: false,
       },
-      authParams
+      authParams,
     })
     setIsSuccess(!('error' in res))
     setError(('error' in res && res?.error) || null)
@@ -47,7 +47,7 @@ export const useSignOut = () => {
   const [signOutUser] = useSignOutMutation()
   const [isSuccess, setIsSuccess] = useState(false)
 
-  const signOut = async (options?: SignInOptions,) => {
+  const signOut = async (options?: SignInOptions) => {
     await signOutUser({
       options: {
         ...options,

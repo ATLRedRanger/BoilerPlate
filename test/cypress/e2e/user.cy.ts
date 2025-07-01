@@ -5,7 +5,9 @@ describe('User tests', () => {
     cy.visit('')
     cy.signUpUser()
   })
-  after(() => { cy.task('deleteTestUsers') })
+  after(() => {
+    cy.task('deleteTestUsers')
+  })
 
   it('New user can sign up and logout', () => {
     cy.visit('')

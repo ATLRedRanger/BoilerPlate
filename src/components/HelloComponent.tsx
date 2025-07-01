@@ -1,13 +1,7 @@
-export const HelloComponent = ({
-    title: string 
-}) => {
-    return (<>
+export const HelloComponent = ({ title: string }) => (
+  <>
     <div>
-        <h1>
-            {
-                "Any Old String"
-            }
-        </h1>
+      <h1>{'Any Old String'}</h1>
     </div>
-    </>)
-}
+  </>
+)

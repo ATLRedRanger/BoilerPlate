@@ -13,19 +13,19 @@ export const userApi = createApi({
     getUsers: build.query<User[], Prisma.UserFindManyArgs | undefined>({
       query: (params) => ({
         url: 'users',
-        params
+        params,
       }),
       providesTags: (result) => [
         ...(result || []).map(({ id }) => ({ type: 'User' as const, id })),
-        { type: 'User', id: 'LIST' }
-      ]
+        { type: 'User', id: 'LIST' },
+      ],
     }),
     addUser: build.mutation<User, Partial<User>>({
       query: (body) => ({
         url: 'users',
         method: 'POST',
         body,
-      })
+      }),
     }),
     updateUser: build.mutation({
       query: (data) => ({
@@ -34,13 +34,9 @@ export const userApi = createApi({
         body: { ...data, id: undefined },
       }),
       invalidatesTags: (user) => [{ type: 'User', id: user?.id }],
-    })
-  })
+    }),
+  }),
 })
 
-export const {
-  useGetUsersQuery,
-  useGetUserQuery,
-  useAddUserMutation,
-  useUpdateUserMutation
-} = userApi
+export const { useGetUsersQuery, useGetUserQuery, useAddUserMutation, useUpdateUserMutation } =
+  userApi

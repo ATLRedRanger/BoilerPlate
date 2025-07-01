@@ -53,7 +53,7 @@ export interface RawGoogleBooksApiResponse {
   items?: RawGoogleBookItem[];
 }
 
-const { GOOGLE_BOOKS_API_KEY , GOOGLE_BOOKS_BASE_URL} = process.env
+const { GOOGLE_BOOKS_API_KEY, GOOGLE_BOOKS_BASE_URL } = process.env
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
@@ -66,20 +66,25 @@ export async function GET(request: NextRequest) {
 
   if (!GOOGLE_BOOKS_API_KEY) {
     console.error('GOOGLE_BOOKS_API_KEY is not set in environment variables.')
-    return NextResponse.json({ error: 'Server configuration error: API Key missing.' }, { status: 500 })
+    return NextResponse.json(
+      { error: 'Server configuration error: API Key missing.' },
+      { status: 500 },
+    )
   }
 
   try {
     const response = await fetch(
-      `${GOOGLE_BOOKS_BASE_URL}?q=${encodeURIComponent(query)}&maxResults=${maxResults}&key=${GOOGLE_BOOKS_API_KEY}`
+      `${GOOGLE_BOOKS_BASE_URL}?q=${encodeURIComponent(query)}&maxResults=${maxResults}&key=${GOOGLE_BOOKS_API_KEY}`,
     )
 
     if (!response.ok) {
       const errorData = await response.json()
       console.error('Google Books API Error:', errorData)
       return NextResponse.json(
-        { error: errorData.error?.message || 'Failed to fetch from Google Books API.' },
-        { status: response.status }
+        {
+          error: errorData.error?.message || 'Failed to fetch from Google Books API.',
+        },
+        { status: response.status },
       )
     }
 

@@ -36,7 +36,9 @@ export const useGoogleBooksAPI = () => {
 
     try {
       // Call your Next.js API route
-      const response = await fetch(`/api/googlebooksapi?query=${encodeURIComponent(query.trim())}&maxResults=${maxResults}`)
+      const response = await fetch(
+        `/api/googlebooksapi?query=${encodeURIComponent(query.trim())}&maxResults=${maxResults}`,
+      )
 
       if (!response.ok) {
         const errorData = await response.json()
@@ -49,20 +51,25 @@ export const useGoogleBooksAPI = () => {
       if (rawData.items) {
         // --- CRUCIAL DATA TRANSFORMATION STEP ---
         // Map the raw Google API items to your desired flattened BookItem structure
-        const transformedBooks: BookItem[] = rawData.items.map((rawGoogleBook: RawGoogleBookItem) => {
-          const { volumeInfo } = rawGoogleBook // Access the nested volumeInfo
+        const transformedBooks: BookItem[] = rawData.items.map(
+          (rawGoogleBook: RawGoogleBookItem) => {
+            const { volumeInfo } = rawGoogleBook // Access the nested volumeInfo
 
-          return {
-            id: rawGoogleBook.id, // Take the ID directly
-            title: volumeInfo.title || 'No Title Available',
-            author: volumeInfo.authors ? volumeInfo.authors.join(', ') : 'Unknown Author',
-            genre: volumeInfo.categories && volumeInfo.categories.length > 0 ? volumeInfo.categories[0] : 'Uncategorized',
-            pageCount: volumeInfo.pageCount || 0,
-            thumbnail: volumeInfo.imageLinks?.thumbnail,
-            previewLink: volumeInfo.previewLink,
-            description: volumeInfo.description || '',
-          }
-        })
+            return {
+              id: rawGoogleBook.id, // Take the ID directly
+              title: volumeInfo.title || 'No Title Available',
+              author: volumeInfo.authors ? volumeInfo.authors.join(', ') : 'Unknown Author',
+              genre:
+                volumeInfo.categories && volumeInfo.categories.length > 0
+                  ? volumeInfo.categories[0]
+                  : 'Uncategorized',
+              pageCount: volumeInfo.pageCount || 0,
+              thumbnail: volumeInfo.imageLinks?.thumbnail,
+              previewLink: volumeInfo.previewLink,
+              description: volumeInfo.description || '',
+            }
+          },
+        )
         setBooks(transformedBooks)
       } else {
         setBooks([]) // No items found

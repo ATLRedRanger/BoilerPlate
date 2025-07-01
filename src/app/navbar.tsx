@@ -33,20 +33,40 @@ const Dropdown: React.FC = () => {
     }
   }, [])
 
-  useEffect(() => { isSignOutSuccess && showAlert({ successMessage: 'Successfully logged out' }) }, [isSignOutSuccess])
+  useEffect(() => {
+    isSignOutSuccess && showAlert({ successMessage: 'Successfully logged out' })
+  }, [isSignOutSuccess])
 
   const renderUserLinks = () => {
     if (isLoading) return null
     if (user) {
-      return <>
-        <li><Link href="/profile"><Avatar user={user} />Profile</Link></li>
-        <li><a onClick={() => signOut()}><ArrowLeftOnRectangle />Log out</a></li>
-      </>
+      return (
+        <>
+          <li>
+            <Link href="/profile">
+              <Avatar user={user} />
+              Profile
+            </Link>
+          </li>
+          <li>
+            <a onClick={() => signOut()}>
+              <ArrowLeftOnRectangle />
+              Log out
+            </a>
+          </li>
+        </>
+      )
     }
-    return <>
-      <li><a onClick={() => setLoginOpen(true)}>Log in</a></li>
-      <li><a onClick={() => setSignupOpen(true)} >Sign up</a></li>
-    </>
+    return (
+      <>
+        <li>
+          <a onClick={() => setLoginOpen(true)}>Log in</a>
+        </li>
+        <li>
+          <a onClick={() => setSignupOpen(true)}>Sign up</a>
+        </li>
+      </>
+    )
   }
 
   return (
@@ -84,7 +104,6 @@ const Dropdown: React.FC = () => {
       {signupOpen && <CredentialsModal setOpen={setSignupOpen} signUp />}
       {loginOpen && <CredentialsModal setOpen={setLoginOpen} />}
     </>
-
   )
 }
 

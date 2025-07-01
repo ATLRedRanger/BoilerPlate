@@ -16,10 +16,7 @@ interface Props {
  */
 const SvgWrapper: React.FC<Props> = ({ children, ...props }) => {
   // Create a new SVG element with the merged props
-  const newSvg = React.cloneElement(
-    React.Children.only(children) as ReactElement,
-    props
-  )
+  const newSvg = React.cloneElement(React.Children.only(children) as ReactElement, props)
   return newSvg
 }
 

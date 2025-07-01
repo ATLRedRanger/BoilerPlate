@@ -12,7 +12,7 @@ export const useGetHelloAPI = async () => {
 
     console.log('Fetched email data:', emailData)
 
-    return (emailData)
+    return emailData
   } catch (error) {
     console.error('Error fetching email:', error)
     throw error

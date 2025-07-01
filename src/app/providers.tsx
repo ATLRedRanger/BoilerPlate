@@ -6,9 +6,7 @@ import { store } from '@/store'
 
 const Providers = ({ children }: { children: React.ReactNode }) => (
   <Provider store={store}>
-    <SessionProvider>
-      {children}
-    </SessionProvider>
+    <SessionProvider>{children}</SessionProvider>
   </Provider>
 )
 

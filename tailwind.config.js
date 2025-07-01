@@ -5,7 +5,7 @@ module.exports = {
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
-  plugins: [require("@tailwindcss/typography"), require("daisyui")],
+  plugins: [require('@tailwindcss/typography'), require('daisyui')],
   daisyui: { themes: ['winter'] },
-  safelist: [{ pattern: /alert-+/ }] // allows dynamic strings for alert classes
-}
+  safelist: [{ pattern: /alert-+/ }], // allows dynamic strings for alert classes
+};

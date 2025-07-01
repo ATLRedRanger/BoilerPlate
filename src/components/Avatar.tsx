@@ -2,8 +2,8 @@ import Image from 'next/image'
 import { User } from '@prisma/client'
 
 interface Props {
-  user?: Partial<User> | null
-  size?: number | string
+  user?: Partial<User> | null;
+  size?: number | string;
 }
 
 const Avatar: React.FC<Props> = ({ user = null, size = '24px' }) => (

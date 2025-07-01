@@ -4,11 +4,11 @@ import { RootState, AppDispatch } from '@/store'
 import { getErrorMessage } from '@/lib/error'
 
 interface ShowAlertOptions {
-  message?: string | null
-  successMessage?: string | null,
-  errorMessage?: string,
-  error?: any
-  duration?: number
+  message?: string | null;
+  successMessage?: string | null;
+  errorMessage?: string;
+  error?: any;
+  duration?: number;
 }
 
 export const useAlert = () => {
@@ -25,7 +25,7 @@ export const useAlert = () => {
       successMessage = null,
       errorMessage = null,
       error = null,
-      duration = 5000
+      duration = 5000,
     } = options || {}
     const alertMessage = message || successMessage || errorMessage || getErrorMessage(error)
     let type: AlertType = 'normal'

@@ -17,7 +17,7 @@ const Form: React.FC<FormProps> = ({
   onClose = null,
   onCancel = null,
   isSubmitting = false,
-  children
+  children,
 }) => (
   <div>
     <form className="mt-4" onSubmit={form.handleSubmit(onSubmit)}>

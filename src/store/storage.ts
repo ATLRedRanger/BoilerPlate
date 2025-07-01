@@ -12,7 +12,7 @@ export const storageApi = createApi({
         body: formData,
         responseHandler: async (res) => res.json(),
       }),
-    })
+    }),
   }),
 })
 

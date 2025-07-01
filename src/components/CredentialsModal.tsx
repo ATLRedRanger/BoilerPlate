@@ -9,20 +9,17 @@ import { getErrorMessage } from '@/lib/error'
 
 interface Props {
   setOpen: (open: boolean) => void;
-  signUp?: boolean
+  signUp?: boolean;
 }
 
 const CredentialsModal: React.FC<Props> = ({ setOpen, signUp = false }) => {
   const form = useForm({ mode: 'onChange' })
-  const [addUser, {
-    error: addUserError,
-    isLoading: isAddUserLoading,
-  }] = useAddUserMutation()
+  const [addUser, { error: addUserError, isLoading: isAddUserLoading }] = useAddUserMutation()
   const {
     signIn,
     isLoading: isSignInLoading,
     isSuccess: signInSuccess,
-    error: signInError
+    error: signInError,
   } = useSignIn()
   const { showAlert } = useAlert()
 
@@ -37,7 +34,7 @@ const CredentialsModal: React.FC<Props> = ({ setOpen, signUp = false }) => {
 
   const onSubmit = async (data: { [x: string]: string }) => {
     const { email, password } = data
-    const signUpError = signUp && 'error' in await addUser({ email, password })
+    const signUpError = signUp && 'error' in (await addUser({ email, password }))
     if (!signUp || !signUpError) await signIn('credentials', { email, password })
   }
 
@@ -45,7 +42,12 @@ const CredentialsModal: React.FC<Props> = ({ setOpen, signUp = false }) => {
     <Modal title={signUp ? 'Sign up' : 'Log in'} setOpen={setOpen}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <TextInput name="email" form={form} disabled={isLoading} />
-        <TextInput name="password" form={form} disabled={isLoading} validate={!signUp ? () => true : null} />
+        <TextInput
+          name="password"
+          form={form}
+          disabled={isLoading}
+          validate={!signUp ? () => true : null}
+        />
         {signUp && <TextInput name="confirmPassword" form={form} disabled={isLoading} />}
         <button type="submit" className="btn btn-primary w-full">
           {signUp ? 'Sign up' : 'Log in'}
@@ -53,7 +55,6 @@ const CredentialsModal: React.FC<Props> = ({ setOpen, signUp = false }) => {
       </form>
       {errorMessage && <div className="mt-2 h-1 text-sm text-red-500">{errorMessage}</div>}
     </Modal>
-
   )
 }
 

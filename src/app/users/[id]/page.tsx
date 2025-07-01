@@ -5,7 +5,7 @@ import NotFound from '@/app/not-found'
 import Profile from '@/components/Profile'
 
 interface Props {
-  params: { id: string }
+  params: { id: string };
 }
 
 const UsersProfilePage: React.FC<Props> = ({ params }) => {

@@ -36,8 +36,12 @@ const EditProfileForm: React.FC<FormProps> = ({ user, setOpen, setActiveForm }) 
   }, [])
 
   // image upload
-  useEffect(() => { imageUrl && updateUser({ id: user.id, bucketImage: imageUrl }) }, [imageUrl])
-  useEffect(() => { error && showAlert({ error }) }, [error])
+  useEffect(() => {
+    imageUrl && updateUser({ id: user.id, bucketImage: imageUrl })
+  }, [imageUrl])
+  useEffect(() => {
+    error && showAlert({ error })
+  }, [error])
 
   if (!user) return <></>
   return (
@@ -57,7 +61,12 @@ const EditProfileForm: React.FC<FormProps> = ({ user, setOpen, setActiveForm }) 
             <Avatar user={user} size={60} />
           </div>
         </FileUploadWrapper>
-        <button className="link link-primary text-right link-hover" onClick={() => setActiveForm('password')}>Change password</button>
+        <button
+          className="link link-primary text-right link-hover"
+          onClick={() => setActiveForm('password')}
+        >
+          Change password
+        </button>
       </div>
       <Form
         form={form}
@@ -83,7 +92,7 @@ const EditPasswordForm: React.FC<FormProps> = ({ user, setActiveForm }) => {
       id: user.id,
       currentPassword,
       password,
-      confirmPassword
+      confirmPassword,
     })
     if ('error' in res) return
     setActiveForm('profile')
@@ -100,7 +109,12 @@ const EditPasswordForm: React.FC<FormProps> = ({ user, setActiveForm }) => {
       >
         <TextInput name="currentPassword" form={form} disabled={isLoading} validate={() => true} />
         <TextInput name="password" labelOverride="New password*" form={form} disabled={isLoading} />
-        <TextInput name="confirmPassword" labelOverride="New password confirmation*" form={form} disabled={isLoading} />
+        <TextInput
+          name="confirmPassword"
+          labelOverride="New password confirmation*"
+          form={form}
+          disabled={isLoading}
+        />
       </Form>
     </div>
   )
@@ -117,12 +131,12 @@ const EditProfileModal: React.FC<ModalProps> = ({ user, setOpen }) => {
   const forms = {
     profile: {
       title: 'Edit profile',
-      component: <EditProfileForm user={user} setOpen={setOpen} setActiveForm={setActiveForm} />
+      component: <EditProfileForm user={user} setOpen={setOpen} setActiveForm={setActiveForm} />,
     },
     password: {
       title: 'Change password',
-      component: <EditPasswordForm user={user} setActiveForm={setActiveForm} />
-    }
+      component: <EditPasswordForm user={user} setActiveForm={setActiveForm} />,
+    },
   }
 
   if (!user) return <></>

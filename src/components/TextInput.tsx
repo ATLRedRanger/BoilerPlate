@@ -3,24 +3,33 @@ import isEmail from 'validator/lib/isEmail'
 import isStrongPassword from 'validator/lib/isStrongPassword'
 
 type Props = {
-  name: string,
-  form: UseFormReturn,
-  disabled?: boolean,
-  multiline?: boolean,
-  validate?: ((value: string) => any) | null,
-  labelOverride?: string
+  name: string;
+  form: UseFormReturn;
+  disabled?: boolean;
+  multiline?: boolean;
+  validate?: ((value: string) => any) | null;
+  labelOverride?: string;
 }
 
 const TextInput: React.FC<Props> = ({
-  name, form, disabled = false, multiline = false, validate = null, labelOverride = null
+  name,
+  form,
+  disabled = false,
+  multiline = false,
+  validate = null,
+  labelOverride = null,
 }) => {
-  const { register, getValues, formState: { errors } } = form
+  const {
+    register,
+    getValues,
+    formState: { errors },
+  } = form
 
   const registerHelper = (options?: RegisterOptions) => {
     if (!register) return {}
     return register(name, {
       required: options?.required,
-      validate: validate || options?.validate
+      validate: validate || options?.validate,
     })
   }
 
@@ -29,7 +38,7 @@ const TextInput: React.FC<Props> = ({
     type: 'text',
     autoComplete: 'off',
     disabled,
-    ...registerHelper()
+    ...registerHelper(),
   }
 
   if (name === 'username') {
@@ -39,8 +48,8 @@ const TextInput: React.FC<Props> = ({
       autoComplete: 'username',
       ...registerHelper({
         required: 'Username is required',
-        validate: (value: string) => value.length > 2 || 'Too short'
-      })
+        validate: (value: string) => value.length > 2 || 'Too short',
+      }),
     }
   }
 
@@ -52,8 +61,8 @@ const TextInput: React.FC<Props> = ({
       autoComplete: 'email',
       ...registerHelper({
         required: 'Email is required',
-        validate: (value: string) => isEmail(value) || 'Invalid email'
-      })
+        validate: (value: string) => isEmail(value) || 'Invalid email',
+      }),
     }
   }
 
@@ -65,8 +74,8 @@ const TextInput: React.FC<Props> = ({
       autoComplete: 'current-password',
       ...registerHelper({
         required: 'Password is required',
-        validate: (value: string) => isStrongPassword(value) || 'Weak password'
-      })
+        validate: (value: string) => isStrongPassword(value) || 'Weak password',
+      }),
     }
   }
 
@@ -78,8 +87,8 @@ const TextInput: React.FC<Props> = ({
       autoComplete: 'current-password',
       ...registerHelper({
         required: false,
-        validate: (value: string) => getValues()?.password === value || 'Password does not match'
-      })
+        validate: (value: string) => getValues()?.password === value || 'Password does not match',
+      }),
     }
   }
 
@@ -91,30 +100,34 @@ const TextInput: React.FC<Props> = ({
       autoComplete: 'current-password',
       ...registerHelper({
         required: 'Password is required',
-        validate: (value: string) => isStrongPassword(value) || 'Weak password'
-      })
+        validate: (value: string) => isStrongPassword(value) || 'Weak password',
+      }),
     }
   }
 
   const InputElement = multiline ? 'textarea' : 'input'
 
-  return <div className="mb-4">
-    <label htmlFor="email" className="block mb-2 font-bold">
-      {labelOverride || inputProps.label}
-    </label>
-    <InputElement
-      className={[
-        'input',
-        'input-bordered',
-        'mb-1',
-        'w-full',
-        errors?.[name] ? 'input-error' : '',
-        multiline ? 'min-h-[144px] h-[auto] p-4' : '',
-      ].join(' ')}
-      {...inputProps}
-    />
-    <span className="block h-1 text-sm text-red-500">{errors?.[name]?.message as string || ''}</span>
-  </div>
+  return (
+    <div className="mb-4">
+      <label htmlFor="email" className="block mb-2 font-bold">
+        {labelOverride || inputProps.label}
+      </label>
+      <InputElement
+        className={[
+          'input',
+          'input-bordered',
+          'mb-1',
+          'w-full',
+          errors?.[name] ? 'input-error' : '',
+          multiline ? 'min-h-[144px] h-[auto] p-4' : '',
+        ].join(' ')}
+        {...inputProps}
+      />
+      <span className="block h-1 text-sm text-red-500">
+        {(errors?.[name]?.message as string) || ''}
+      </span>
+    </div>
+  )
 }
 
 export default TextInput

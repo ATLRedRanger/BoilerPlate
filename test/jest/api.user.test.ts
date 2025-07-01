@@ -24,9 +24,7 @@ describe('/api/users', () => {
     expect(res.status).toBe(200)
 
     const data = await res.json()
-    expect(data).toEqual(
-      expect.objectContaining({ email: body.email }),
-    )
+    expect(data).toEqual(expect.objectContaining({ email: body.email }))
   })
 
   test('user can edit same user', async () => {
@@ -37,16 +35,14 @@ describe('/api/users', () => {
     expect(res.status).toBe(200)
 
     const data = await res.json()
-    expect(data).toEqual(
-      expect.objectContaining({ username: body.username }),
-    )
+    expect(data).toEqual(expect.objectContaining({ username: body.username }))
   })
 
   test('user cannot edit different user', async () => {
     await createGetServerSessionMock()
     const body = { name: 'Put Adams' }
     const otherUser = await prisma.user.create({
-      data: generateUserBody()
+      data: generateUserBody(),
     })
     const req = createNextRequest({ method: 'PUT', body })
     const res = await putUser(req, { params: { id: otherUser.id } })
@@ -55,7 +51,11 @@ describe('/api/users', () => {
 
   test('user can change password', async () => {
     const user = await createGetServerSessionMock()
-    const body = { currentPassword: 'Abcd1234!', password: 'Abcd1234!!!', confirmPassword: 'Abcd1234!!!' }
+    const body = {
+      currentPassword: 'Abcd1234!',
+      password: 'Abcd1234!!!',
+      confirmPassword: 'Abcd1234!!!',
+    }
     const req = createNextRequest({ method: 'PUT', body })
     const res = await putUser(req, { params: { id: user.id } })
     expect(res.status).toBe(200)

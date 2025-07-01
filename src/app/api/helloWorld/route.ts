@@ -8,13 +8,13 @@ export const findsFirstEmail = async () => {
     const firstEmail = await prisma.user.findFirst({
       select: {
         email: true,
-      }
+      },
     })
     console.log(firstEmail)
     return firstEmail
   } catch (error) {
     console.error('Error finding first email:', error)
-    throw (error)
+    throw error
   }
 }
 

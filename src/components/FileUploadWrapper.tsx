@@ -20,9 +20,7 @@ const FileUploaWrapper: React.FC<ImageUploaderProps> = ({
     onError && onError(error)
   }, [error])
 
-  const handleFileChange = async (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target?.files?.[0]
     if (!file) return
     const data = new FormData()
@@ -35,12 +33,7 @@ const FileUploaWrapper: React.FC<ImageUploaderProps> = ({
 
   return (
     <>
-      <input
-        type="file"
-        className="hidden"
-        id="fileInput"
-        onChange={handleFileChange}
-      />
+      <input type="file" className="hidden" id="fileInput" onChange={handleFileChange} />
       <label htmlFor="fileInput">{children}</label>
     </>
   )

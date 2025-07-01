@@ -64,30 +64,29 @@ const logError = (error: any) => {
  * @param routeHandler - The route handler function to be wrapped.
  * @returns Wrapped route handler function.
  */
-export const routeWrapper = (
-  routeHandler: (
-    req: NextRequest, context?: any) => Promise<NextResponse>
-) => async (req: NextRequest, context?: any) => {
-  const setConsumedBody = async () => {
-    const contentType = (typeof req.headers?.get === 'function') && req.headers.get('content-type')?.toLowerCase()
-    if (contentType === 'application/json') req.consumedBody = await req?.json()
-    if (contentType === 'multipart/form-data') req.consumedBody = await req?.formData()
-  }
-  try {
-    await setConsumedBody()
-    logRequest(req)
-    const result = await routeHandler(req, context)
-    return result
-  } catch (error: any) {
-    const response = {
-      ...(process.env.NODE_ENV !== 'production' && { stack: error.stack }),
-      message: error?.message || 'Server failure',
-      statusCode: error.statusCode,
+export const routeWrapper =
+  (routeHandler: (req: NextRequest, context?: any) => Promise<NextResponse>) => async (req: NextRequest, context?: any) => {
+    const setConsumedBody = async () => {
+      const contentType =
+        typeof req.headers?.get === 'function' && req.headers.get('content-type')?.toLowerCase()
+      if (contentType === 'application/json') req.consumedBody = await req?.json()
+      if (contentType === 'multipart/form-data') req.consumedBody = await req?.formData()
     }
-    logError(response)
-    return NextResponse.json(response, { status: error.statusCode || 500 })
+    try {
+      await setConsumedBody()
+      logRequest(req)
+      const result = await routeHandler(req, context)
+      return result
+    } catch (error: any) {
+      const response = {
+        ...(process.env.NODE_ENV !== 'production' && { stack: error.stack }),
+        message: error?.message || 'Server failure',
+        statusCode: error.statusCode,
+      }
+      logError(response)
+      return NextResponse.json(response, { status: error.statusCode || 500 })
+    }
   }
-}
 
 /**
  * Retrieves the user session information from the server session.
@@ -116,10 +115,13 @@ export const checkUserMatchesSession = async (userId: string | undefined) => {
  * @returns Parsed query parameters as an object.
  */
 export const getQueryParams = (nextUrl: NextURL) => {
-  const queryParams = Array.from(nextUrl.searchParams.entries()).reduce((acc, [key, value]) => {
-    const numericValue = !Number.isNaN(Number(value)) ? Number(value) : value
-    return { ...acc, [key]: numericValue }
-  }, {} as { [key: string]: string | number })
+  const queryParams = Array.from(nextUrl.searchParams.entries()).reduce(
+    (acc, [key, value]) => {
+      const numericValue = !Number.isNaN(Number(value)) ? Number(value) : value
+      return { ...acc, [key]: numericValue }
+    },
+    {} as { [key: string]: string | number },
+  )
 
   return queryParams
 }
@@ -143,6 +145,6 @@ export const checkUserBody = async (body: any, id: string | null = null) => {
 
   if (!body) throw new ApiError('Request must have body', 400)
   const { username, email } = body
-  if (username && await usernameExists(username)) throw new ApiError('Username exists', 400)
-  if (email && await emailExists(email)) throw new ApiError('Email exists', 400)
+  if (username && (await usernameExists(username))) throw new ApiError('Username exists', 400)
+  if (email && (await emailExists(email))) throw new ApiError('Email exists', 400)
 }

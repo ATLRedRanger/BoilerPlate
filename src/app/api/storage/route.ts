@@ -21,18 +21,23 @@ export const POST = routeWrapper(async (req: NextRequest) => {
   const { data: list, error: listError } = await storageApi.list(`${directory}/`)
   if (listError) throw new ApiError(listError.message)
   if (list?.length) {
-    const { error: removeError } = await storageApi.remove(list?.map((f) => `${directory}/${f.name}`) || [])
+    const { error: removeError } = await storageApi.remove(
+      list?.map((f) => `${directory}/${f.name}`) || [],
+    )
     if (removeError) throw new ApiError(removeError.message)
   }
 
   // upload new file
   const { error: uploadError } = await storageApi.upload(path, buffer, {
-    contentType: file.type, upsert: true
+    contentType: file.type,
+    upsert: true,
   })
   if (uploadError) throw new ApiError(uploadError.message)
 
   // get public url
-  const { data: { publicUrl } } = await storageApi.getPublicUrl(path)
+  const {
+    data: { publicUrl },
+  } = await storageApi.getPublicUrl(path)
 
   return NextResponse.json({ publicUrl })
 })

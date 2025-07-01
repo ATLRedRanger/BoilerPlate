@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
- typescript: {ignoreBuildErrors: true},
+  typescript: { ignoreBuildErrors: true },
   images: {
     remotePatterns: [
       {
@@ -14,7 +14,7 @@ const nextConfig = {
         pathname: '/**',
       },
     ],
-  }
-}
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

@@ -15,7 +15,9 @@ const UserCard: React.FC<{ user: Partial<User> }> = ({ user }) => (
   <Link href={`/users/${user.id}`}>
     <div className="flex items-center text-center md:text-left justify-between bg-base-200 rounded-box p-4 mt-4 w-full">
       <div className="flex items-center">
-        <div className="hidden md:block mr-4"><Avatar user={user} size={64} /></div>
+        <div className="hidden md:block mr-4">
+          <Avatar user={user} size={64} />
+        </div>
         <div>
           <div className="flex justify-center mb-4 md:hidden">
             <Avatar user={user} size={64} />
@@ -73,7 +75,10 @@ const Users: React.FC = () => {
   // Rating is 0 - 5
   const [bookRating, setBookRating] = useState(0)
   // State variable for displaying success/error messages to the user
-  const [formMessage, setFormMessage] = useState<{ text: string; type: string }>({ text: '', type: '' })
+  const [formMessage, setFormMessage] = useState<{
+    text: string;
+    type: string;
+  }>({ text: '', type: '' })
 
   const { createBook, isLoading } = useSubmitBook()
   /**
@@ -89,12 +94,18 @@ const Users: React.FC = () => {
 
     // Basic validation: Check if any field is empty
     if (!trimmedTitle || !trimmedAuthor || !selectedGenre) {
-      setFormMessage({ text: 'Please fill in all book fields.', type: 'error' })
+      setFormMessage({
+        text: 'Please fill in all book fields.',
+        type: 'error',
+      })
       return // Stop function execution if validation fails
     }
 
     if (bookRating === 0) {
-      setFormMessage({ text: 'Please select a star rating for the book.', type: 'error' })
+      setFormMessage({
+        text: 'Please select a star rating for the book.',
+        type: 'error',
+      })
       return
     }
     // Log the captured book details to the console (simulating database input)
@@ -112,7 +123,7 @@ const Users: React.FC = () => {
       title: trimmedTitle,
       author: trimmedAuthor,
       genre: selectedGenre,
-      rating: bookRating
+      rating: bookRating,
     }
     try {
       setFormMessage({ text: '', type: '' }) // Clear previous messages
@@ -147,22 +158,20 @@ const Users: React.FC = () => {
     <main className="px-6 py-4 w-full max-w-[800px]">
       {/* Displaying the information retrieved from the helloAPi */}
       <div>
-      <h1>Hello API Data:</h1>
-      {data ? (
-        <pre>{JSON.stringify(data, null, 2)}</pre>
-      ) : (
-        <p>No data received.</p>
-      )}
-    </div>
+        <h1>Hello API Data:</h1>
+        {data ? <pre>{JSON.stringify(data, null, 2)}</pre> : <p>No data received.</p>}
+      </div>
 
-    {/* --- New Book Input Form Section (Above your existing content) --- */}
+      {/* --- New Book Input Form Section (Above your existing content) --- */}
       <div className="bg-white p-8 rounded-2xl shadow-xl max-w-md w-full border border-gray-200 mx-auto mb-8">
         <h2 className="text-3xl font-extrabold text-gray-800 mb-8 text-center">Add New Book</h2>
 
         <div className="space-y-6">
           {/* Book Title Input Field */}
           <div>
-            <label htmlFor="bookTitle" className="block text-sm font-medium text-gray-700 mb-1">Book Title</label>
+            <label htmlFor="bookTitle" className="block text-sm font-medium text-gray-700 mb-1">
+              Book Title
+            </label>
             <input
               type="text"
               id="bookTitle"
@@ -176,7 +185,9 @@ const Users: React.FC = () => {
 
           {/* Author Input Field */}
           <div>
-            <label htmlFor="bookAuthor" className="block text-sm font-medium text-gray-700 mb-1">Author Name</label>
+            <label htmlFor="bookAuthor" className="block text-sm font-medium text-gray-700 mb-1">
+              Author Name
+            </label>
             <input
               type="text"
               id="bookAuthor"
@@ -190,7 +201,9 @@ const Users: React.FC = () => {
 
           {/* Genre Dropdown (Replaced Input Field) */}
           <div>
-            <label htmlFor="bookGenre" className="block text-sm font-medium text-gray-700 mb-1">Genre</label>
+            <label htmlFor="bookGenre" className="block text-sm font-medium text-gray-700 mb-1">
+              Genre
+            </label>
             <select
               id="bookGenre"
               name="bookGenre"
@@ -231,7 +244,7 @@ const Users: React.FC = () => {
                   strokeLinejoin="round"
                 >
                   {/* The path defines the shape of the icons. The current numbers are the star, but these can be changed to get other shapes. */}
-                  <path d="M12 .587l3.668 7.568 8.332 1.206-6.001 5.856 1.416 8.307L12 18.896l-7.415 3.898 1.416-8.307-6.001-5.856 8.332-1.206z"/>
+                  <path d="M12 .587l3.668 7.568 8.332 1.206-6.001 5.856 1.416 8.307L12 18.896l-7.415 3.898 1.416-8.307-6.001-5.856 8.332-1.206z" />
                 </svg>
               ))}
             </div>
@@ -258,7 +271,6 @@ const Users: React.FC = () => {
             </div>
           )}
         </div>
-
       </div>
       {users.slice(0, visibleUserCount).map((user) => (
         <UserCard key={user.id} user={user} />

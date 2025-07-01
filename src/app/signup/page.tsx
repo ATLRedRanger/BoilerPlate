@@ -18,7 +18,9 @@ const Signup: React.FC = () => {
     await addUser({ email, password })
   }
 
-  useEffect(() => { error && showAlert({ error }) }, [error])
+  useEffect(() => {
+    error && showAlert({ error })
+  }, [error])
 
   if (isSuccess) router.push('/api/auth/signin')
 

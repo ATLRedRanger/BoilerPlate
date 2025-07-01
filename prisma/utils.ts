@@ -17,8 +17,8 @@ const generateUser = async () => {
       name: `${firstName} ${lastName}`,
       username,
       email: `${username}@${SEED_EMAIL_DOMAIN}`,
-      password: await generateHash('Abc1234!')
-    }
+      password: await generateHash('Abc1234!'),
+    },
   })
   return user
 }
@@ -29,5 +29,5 @@ export const generateSeedData = async (userCount = 20) => {
 }
 
 export const deleteSeedData = async () => prisma.user.deleteMany({
-  where: { email: { endsWith: `@${SEED_EMAIL_DOMAIN}` } }
+  where: { email: { endsWith: `@${SEED_EMAIL_DOMAIN}` } },
 })

@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 import { TEST_EMAIL_DOMAIN } from '../utils'
 
-type User = { username: string, email: string, password: string }
+type User = { username: string; email: string; password: string }
 declare global {
   namespace Cypress {
     interface Chainable {
-      signUpUser: (user?: User) => void,
-      loginUser: (user?: User) => void,
-      logoutUser: () => void,
-      openMenuAndClick: (linkText: string) => void
+      signUpUser: (user?: User) => void;
+      loginUser: (user?: User) => void;
+      logoutUser: () => void;
+      openMenuAndClick: (linkText: string) => void;
     }
   }
 }
@@ -16,7 +16,7 @@ declare global {
 export const createNewUser = () => ({
   username: `patch-adams-${new Date().getTime()}`,
   email: `patch-adams-${new Date().getTime()}@${TEST_EMAIL_DOMAIN}`,
-  password: 'Abcd1234!'
+  password: 'Abcd1234!',
 })
 
 export const defaultUser = createNewUser()

@@ -11,12 +11,14 @@ const authOptions: NextAuthOptions = {
       name: 'Credentials',
       credentials: {
         email: { label: 'email', type: 'email' },
-        password: { label: 'Password', type: 'password' }
+        password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
         if (!credentials) throw new Error('Invalid credentials')
 
-        const user = await prisma.user.findUnique({ where: { email: credentials.email } })
+        const user = await prisma.user.findUnique({
+          where: { email: credentials.email },
+        })
         if (!user) throw new Error('Invalid credentials')
 
         const valid = await validatePassword(credentials.password, user?.password as string)
@@ -30,11 +32,11 @@ const authOptions: NextAuthOptions = {
   session: { strategy: 'jwt' }, // for credentials provider
   callbacks: {
     async session({ session, user, token }) {
-      const email = user?.email || token?.email as string
+      const email = user?.email || (token?.email as string)
       session.user = await prisma.user.findUnique({ where: { email } })
       return session
-    }
-  }
+    },
+  },
 }
 
 export default authOptions

@@ -8,8 +8,8 @@ import EditProfileModal from '@/components/EditProfileModal'
 import Pencil from '@/icons/Pencil'
 
 interface Props {
-  user: Partial<User>
-  canEdit?: boolean
+  user: Partial<User>;
+  canEdit?: boolean;
 }
 
 const Profile: React.FC<Props> = ({ user, canEdit = false }) => {
@@ -33,13 +33,17 @@ const Profile: React.FC<Props> = ({ user, canEdit = false }) => {
             </div>
           )}
         </div>
-        {canEdit &&
+        {canEdit && (
           <div className="tooltip" data-tip="Edit profile">
-            <button id="edit-profile" className="btn btn-square p-2" onClick={() => setModalOpen(true)}>
+            <button
+              id="edit-profile"
+              className="btn btn-square p-2"
+              onClick={() => setModalOpen(true)}
+            >
               <Pencil className="text-primary" />
             </button>
           </div>
-        }
+        )}
       </div>
       <div className="p-4">
         <div className="mt-8">
@@ -47,16 +51,15 @@ const Profile: React.FC<Props> = ({ user, canEdit = false }) => {
           <p className="text-gray-500">{user?.name}</p>
           <p className="text-gray-500">{user?.email}</p>
         </div>
-        {info?.about
-          && <div className="mt-8">
+        {info?.about && (
+          <div className="mt-8">
             <h4 className="text-lg font-bold">About</h4>
             <p className="text-gray-500 whitespace-pre-line">{info?.about || ''}</p>
           </div>
-        }
-
+        )}
       </div>
       {modalOpen && user && <EditProfileModal user={user} setOpen={setModalOpen} />}
-    </ >
+    </>
   )
 }
 

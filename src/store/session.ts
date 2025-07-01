@@ -12,11 +12,14 @@ export const sessionApi = createApi({
       query: () => 'session',
       providesTags: (_session, _err) => [{ type: 'Session', id: 'current_session' }],
     }),
-    signIn: build.mutation<{ url: string }, {
-      provider: BuiltInProviderType,
-      options: SignInOptions,
-      authParams?: SignInAuthorizationParams
-    }>({
+    signIn: build.mutation<
+    { url: string },
+    {
+      provider: BuiltInProviderType;
+      options: SignInOptions;
+      authParams?: SignInAuthorizationParams;
+    }
+    >({
       query: ({ provider, options, authParams }) => ({
         url: `${`/${provider === 'credentials' ? 'callback' : 'signin'}/${provider}`}?${new URLSearchParams(authParams)}`,
         method: 'POST',
@@ -42,7 +45,7 @@ export const sessionApi = createApi({
       }),
       invalidatesTags: (_url) => ['Session'],
     }),
-  })
+  }),
 })
 
 export const { useGetSessionQuery, useSignInMutation, useSignOutMutation } = sessionApi

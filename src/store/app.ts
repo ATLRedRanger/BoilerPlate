@@ -17,11 +17,11 @@ interface AppState {
 interface ShowAlertPayload {
   message: string | null;
   duration: number;
-  type: AlertType | null
+  type: AlertType | null;
 }
 
 const initialState: AppState = {
-  alert: { isVisible: false, message: null, type: null, duration: 5000 }
+  alert: { isVisible: false, message: null, type: null, duration: 5000 },
 }
 
 export const showAlertAsync = createAsyncThunk<void, ShowAlertPayload>(
@@ -30,7 +30,7 @@ export const showAlertAsync = createAsyncThunk<void, ShowAlertPayload>(
     setTimeout(() => {
       resolve()
     }, duration)
-  })
+  }),
 )
 
 export const appSlice = createSlice({
