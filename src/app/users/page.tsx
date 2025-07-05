@@ -6,7 +6,6 @@ import { User } from '@prisma/client'
 import { useGetUsersQuery } from '@/store'
 import { formatDate } from '@/lib/date'
 import Avatar from '@/components/Avatar'
-import { useGetHelloAPI } from '@/hooks/useGetHelloApi'
 import { useSubmitBook, BookDTO } from '@/hooks/useGetBookApi'
 
 const LOAD_INCREMENT = 5
@@ -47,26 +46,6 @@ const Users: React.FC = () => {
     behavior: 'smooth',
   })
 
-  // Using the useGetHelloAPI hook
-  const [data, setData] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const result = await useGetHelloAPI()
-        setData(result)
-      } catch (err) {
-        setError(error)
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchData()
-  }, [])
-
   // State variables for the book inputs
   const [bookTitle, setBookTitle] = useState('')
   const [bookAuthor, setBookAuthor] = useState('')
@@ -80,7 +59,7 @@ const Users: React.FC = () => {
     type: string;
   }>({ text: '', type: '' })
 
-  const { createBook, isLoading } = useSubmitBook()
+  const { createBook } = useSubmitBook()
   /**
    * Handles the submission of the new book form.
    * Performs basic validation and logs the collected data.
@@ -117,7 +96,9 @@ const Users: React.FC = () => {
     console.log('---------------------------------')
 
     // Display a success message to the user
-    // setFormMessage({ text: `Book "${trimmedTitle}" by ${trimmedAuthor} (${selectedGenre}) has been saved!`, type: 'success' });
+    // setFormMessage({ text: `Book "${trimmedTitle}"
+    //  by ${trimmedAuthor} (${selectedGenre}) has
+    // been saved!`, type: 'success' });
 
     const newBookData: BookDTO = {
       title: trimmedTitle,
@@ -143,10 +124,6 @@ const Users: React.FC = () => {
       setBookRating(0)
     } catch (err) {
       // The useCreateBook hook already sets the error state, but you can display it here too
-      setFormMessage({
-        text: error || 'Failed to save book. Please try again.',
-        type: 'error',
-      })
       console.error('Submission error:', err)
     }
   }
@@ -158,8 +135,6 @@ const Users: React.FC = () => {
     <main className="px-6 py-4 w-full max-w-[800px]">
       {/* Displaying the information retrieved from the helloAPi */}
       <div>
-        <h1>Hello API Data:</h1>
-        {data ? <pre>{JSON.stringify(data, null, 2)}</pre> : <p>No data received.</p>}
       </div>
 
       {/* --- New Book Input Form Section (Above your existing content) --- */}
@@ -176,7 +151,9 @@ const Users: React.FC = () => {
               type="text"
               id="bookTitle"
               name="bookTitle"
-              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-base outline-none transition duration-150 ease-in-out"
+              className="mt-1 block w-full px-4 py-2 border border-gray-300
+              rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500
+               sm:text-base outline-none transition duration-150 ease-in-out"
               placeholder="e.g., The Great Gatsby"
               value={bookTitle} // Controlled component: input value tied to state
               onChange={(e) => setBookTitle(e.target.value)} // Update state on change
@@ -192,7 +169,9 @@ const Users: React.FC = () => {
               type="text"
               id="bookAuthor"
               name="bookAuthor"
-              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-base outline-none transition duration-150 ease-in-out"
+              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg
+              shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-base outline-none
+              transition duration-150 ease-in-out"
               placeholder="e.g., F. Scott Fitzgerald"
               value={bookAuthor}
               onChange={(e) => setBookAuthor(e.target.value)}
@@ -207,7 +186,9 @@ const Users: React.FC = () => {
             <select
               id="bookGenre"
               name="bookGenre"
-              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-red-500 sm:text-base outline-none transition duration-150 ease-in-out"
+              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg
+              shadow-sm focus:ring-indigo-500 focus:border-red-500 sm:text-base outline-none
+              transition duration-150 ease-in-out"
               value={bookGenre} // Controlled component: selected value tied to state
               onChange={(e) => setBookGenre(e.target.value)} // Update state on change
             >
@@ -243,8 +224,12 @@ const Users: React.FC = () => {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 >
-                  {/* The path defines the shape of the icons. The current numbers are the star, but these can be changed to get other shapes. */}
-                  <path d="M12 .587l3.668 7.568 8.332 1.206-6.001 5.856 1.416 8.307L12 18.896l-7.415 3.898 1.416-8.307-6.001-5.856 8.332-1.206z" />
+                  {/* The path defines the shape of the icons.
+                  The current numbers are the star, but these can
+                  be changed to get other shapes. */}
+                  <path d="M12 .587l3.668 7.568 8.332 1.206-6.001 5.856
+                   1.416 8.307L12 18.896l-7.415 3.898 1.416-8.307-6.001-5.856
+                   8.332-1.206z" />
                 </svg>
               ))}
             </div>

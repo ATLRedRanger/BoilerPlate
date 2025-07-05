@@ -58,7 +58,8 @@ interface UseBooksResult {
   books: BookDTO[]; // Directly use BookDTO here
   loading: boolean;
   error: string | null;
-  refetch: (options?: UseBooksOptions) => void; // Function to manually refetch data with optional new options
+  refetch: (options?: UseBooksOptions) => void;
+  // Function to manually refetch data with optional new options
 }
 
 // Directly use BookDTO as the type for fetched books
@@ -107,10 +108,12 @@ export const useGetBooks = (initialOptions?: UseBooksOptions): UseBooksResult =>
     setOptions((prevOptions) => ({ ...prevOptions, ...newOptions }))
   }, [])
 
-  // useEffect to call fetchBooks when the component mounts or sort options change
+  // useEffect to call fetchBooks when the
+  // component mounts or sort options change
   useEffect(() => {
     fetchBooks(sortBy, sortOrder)
-  }, [fetchBooks, sortBy, sortOrder]) // Dependency on fetchBooks memoized function and current options
+  }, [fetchBooks, sortBy, sortOrder])
+  // Dependency on fetchBooks memoized function and current options
 
   // Return the data, loading state, error, and a refetch function
   return { books, loading, error, refetch }

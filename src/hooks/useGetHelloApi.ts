@@ -1,4 +1,4 @@
-export const useGetHelloAPI = async () => {
+const useGetHelloAPI = async () => {
   try {
     const response = await fetch('http://localhost:3000/api/helloWorld', {
       method: 'GET',
@@ -18,3 +18,5 @@ export const useGetHelloAPI = async () => {
     throw error
   }
 }
+
+export default useGetHelloAPI

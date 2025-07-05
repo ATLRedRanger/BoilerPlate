@@ -65,7 +65,8 @@ const logError = (error: any) => {
  * @returns Wrapped route handler function.
  */
 export const routeWrapper =
-  (routeHandler: (req: NextRequest, context?: any) => Promise<NextResponse>) => async (req: NextRequest, context?: any) => {
+  (routeHandler: (req: NextRequest, context?: any) =>
+  Promise<NextResponse>) => async (req: NextRequest, context?: any) => {
     const setConsumedBody = async () => {
       const contentType =
         typeof req.headers?.get === 'function' && req.headers.get('content-type')?.toLowerCase()

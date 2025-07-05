@@ -1,18 +1,16 @@
 // src/hooks/useGoogleBooksAPI.ts
 import { useState, useCallback } from 'react'
 
-// Import your NEW, flattened BookItem and BooksApiResponse
-import { BookItem } from '@/app/api/googlebooksapi/route'
-
 // Import the raw Google API response types for internal mapping
 // (These could be in a separate file, e.g., 'src/types/googleApiRawTypes.ts',
 // but for this example, we assume they are accessible or defined here if preferred)
-import { RawGoogleBookItem, RawGoogleBooksApiResponse } from '@/app/api/googlebooksapi/route'
+// Import your NEW, flattened BookItem and BooksApiResponse
+import { BookItem, RawGoogleBookItem, RawGoogleBooksApiResponse } from '@/app/api/googlebooksapi/route'
 
 /**
  * Custom hook to search for books using the Google Books API via a Next.js API route.
  */
-export const useGoogleBooksAPI = () => {
+const useGoogleBooksAPI = () => {
   // `books` state now holds your flattened `BookItem` objects
   const [books, setBooks] = useState<any>([])
   const [loading, setLoading] = useState<boolean>(false)
@@ -84,3 +82,5 @@ export const useGoogleBooksAPI = () => {
 
   return { books, loading, error, searchBooks }
 }
+
+export default useGoogleBooksAPI
